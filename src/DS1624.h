@@ -25,6 +25,9 @@ private:
   // Stores the conversion mode
   bool _continuousConversion;
   
+  // Init function
+  Init(bool a2, bool a1, bool a0, bool continuousConversion);
+  
 public:
   // Default constructor. Use address pins a2,a1,a0 connected to ground,
   // continuous temperature conversion and I2C master default pins
