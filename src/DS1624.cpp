@@ -34,7 +34,7 @@ DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion, int sck, in
   Init(bool a2, bool a1, bool a0, bool continuousConversion);
 }
 
-DS1624::Init(bool a2, bool a1, bool a0, bool continuousConversion)
+void DS1624::Init(bool a2, bool a1, bool a0, bool continuousConversion)
 {
   // Base address least significant bits will be a2, a1, a0 respectively 
   _address = BASE_ADDRESS | (a2 << 2) | (a1 << 1) | a0;
