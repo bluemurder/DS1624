@@ -15,9 +15,10 @@ DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
   // Save conversion mode
   _continuousConversion = continuousConversion;
   
-  // Start I2C communication and configure device
+  // Start I2C communication on default SCK, SDA ports
   Wire.begin();
   
+  //  Configure sensor
   Wire.beginTransmission(_address);
   Wire.write(ACCESS_CONFIG);
   Wire.write(0x00 | _continuousConversion);
