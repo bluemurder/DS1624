@@ -6,8 +6,6 @@
 #ifndef DS1624_Arduino_Library
 #define DS1624_Arduino_Library
 
-#include <Wire.h>
-
 class DS1624
 {
 private:
