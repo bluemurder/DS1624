@@ -7,16 +7,40 @@
 #include <Arduino.h>
 #include <Wire.h>
 
+DS1624::DS1624();
+{
+  // Start I2C communication on default SCK, SDA ports for I2C master
+  Wire.begin();
+  
+  // a2 <- ground; a1 <- ground; a0 <- ground; continuous conversion = true;
+  Init(false, false, false, true);
+}
+
 DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
+{
+  // Start I2C communication on default SCK, SDA ports for I2C master
+  Wire.begin();
+  
+  // Init class with specified parameters
+  Init(bool a2, bool a1, bool a0, bool continuousConversion);
+}
+
+DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion, int sck, int sda)
+{
+  // Start I2C communication with specified SCK, SDA ports for I2C master
+  Wire.begin(sck, sda);
+  
+  // Init class with specified parameters
+  Init(bool a2, bool a1, bool a0, bool continuousConversion);
+}
+
+DS1624::Init(bool a2, bool a1, bool a0, bool continuousConversion)
 {
   // Base address least significant bits will be a2, a1, a0 respectively 
   _address = BASE_ADDRESS | (a2 << 2) | (a1 << 1) | a0;
   
   // Save conversion mode
   _continuousConversion = continuousConversion;
-  
-  // Start I2C communication on default SCK, SDA ports
-  Wire.begin();
   
   //  Configure sensor
   Wire.beginTransmission(_address);
