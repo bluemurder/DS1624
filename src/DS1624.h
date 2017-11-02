@@ -25,9 +25,6 @@ private:
   // Stores the conversion mode
   bool _continuousConversion;
   
-  // Init function
-  void Init(bool a2, bool a1, bool a0, bool continuousConversion);
-  
 public:
   // Default constructor. Use address pins a2,a1,a0 connected to ground,
   // continuous temperature conversion and I2C master default pins
@@ -37,16 +34,6 @@ public:
   // connection of physical sensor pins, and set continuous temperature 
   // conversion or one-shot conversion mode.
   DS1624(bool a2, bool a1, bool a0, bool continuousConversion);
-  
-  // Class constructor. Set the a2,a1,a0 bits according to the hardware 
-  // connection of physical sensor pins; set continuous temperature 
-  // conversion or one-shot conversion mode; set I2C master pins
-  DS1624(bool a2,
-         bool a1, 
-         bool a0, 
-         bool continuousConversion, 
-         int sck, 
-         int sda);
   
   // Gets temperature following the conversion mode defined by constructor.
   float GetTemperature();
