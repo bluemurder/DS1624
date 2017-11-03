@@ -31,7 +31,7 @@ SOFTWARE.
 DS1624::DS1624();
 { 
   // a2 <- ground; a1 <- ground; a0 <- ground; continuous conversion = true;
-  Init(false, false, false, true);
+  DS1624(false, false, false, true);
 }
 
 void DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
