@@ -28,6 +28,7 @@ SOFTWARE.
 
 // Sensor presents all address pins connected to ground, and it will work in 
 // one-shot temperature conversion mode.
+// DS1624(bool a2, bool a1, bool a0, bool continuousConversion);
 DS1624 ds1624(false, false, false, false);
 
 void setup()
