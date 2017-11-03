@@ -27,21 +27,23 @@ SOFTWARE.
 #ifndef DS1624_Arduino_Library
 #define DS1624_Arduino_Library
 
+#include <stdint.h>
+
 class DS1624
 {
 private:
   // Command codes
-  const byte START_CONVERSION = 0xEE;
-  const byte READ_TEMPERATURE = 0xAA;
-  const byte STOP_CONVERSION  = 0x22;
-  const byte ACCESS_MEM       = 0x17;
-  const byte ACCESS_CONFIG    = 0xAC;
+  const uint8_t START_CONVERSION = 0xEE;
+  const uint8_t READ_TEMPERATURE = 0xAA;
+  const uint8_t STOP_CONVERSION  = 0x22;
+  const uint8_t ACCESS_MEM       = 0x17;
+  const uint8_t ACCESS_CONFIG    = 0xAC;
   
   // Base sensor address 
-  const byte BASE_ADDRESS     = 0x48;
+  const uint8_t BASE_ADDRESS     = 0x48;
   
   // Stores the actual address
-  byte _address;
+  uint8_t _address;
   
   // Stores the conversion mode
   bool _continuousConversion;
