@@ -1,5 +1,5 @@
 /*****************************************************************************
-Arduino IDE Library for DS1624 temperature sensor from Maxim IC
+Arduino Library for Maxim DS1624 temperature sensor and memory
 
 MIT License
 
