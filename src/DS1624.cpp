@@ -34,7 +34,7 @@ DS1624::DS1624()
   DS1624(false, false, false, true);
 }
 
-void DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
+DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
 {
   // Start I2C communication on default SCK, SDA ports for I2C master
   Wire.begin();
