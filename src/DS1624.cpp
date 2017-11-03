@@ -28,7 +28,7 @@ SOFTWARE.
 #include <Arduino.h>
 #include <Wire.h>
 
-DS1624::DS1624();
+DS1624::DS1624()
 { 
   // a2 <- ground; a1 <- ground; a0 <- ground; continuous conversion = true;
   DS1624(false, false, false, true);
