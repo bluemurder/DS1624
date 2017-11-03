@@ -28,13 +28,13 @@ SOFTWARE.
 #include <Arduino.h>
 #include <Wire.h>
 
-DS1624::DS1624();
+DS1624::DS1624()
 { 
   // a2 <- ground; a1 <- ground; a0 <- ground; continuous conversion = true;
   DS1624(false, false, false, true);
 }
 
-void DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
+DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
 {
   // Start I2C communication on default SCK, SDA ports for I2C master
   Wire.begin();
@@ -92,7 +92,7 @@ float DS1624::GetTemperature()
       // when conversion done
       Wire.beginTransmission(_address);
       Wire.write(ACCESS_CONFIG);
-      Wire.requestFrom(_address, 1, true);
+      Wire.requestFrom(_address, (size_t)1, true);
       
       // Wait for data sent from sensor
       while(!Wire.available());
@@ -105,7 +105,7 @@ float DS1624::GetTemperature()
   // Request to read last converted temperature value
   Wire.beginTransmission(_address);
   Wire.write(READ_TEMPERATURE);
-  Wire.requestFrom(_address, 2, true);
+  Wire.requestFrom(_address, (size_t)2, true);
 
   // Wait for data sent from sensor
   while(!Wire.available());
