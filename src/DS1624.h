@@ -31,17 +31,17 @@ class DS1624
 {
 private:
   // Command codes
-  const uint8_t START_CONVERSION = 0xEE;
-  const uint8_t READ_TEMPERATURE = 0xAA;
-  const uint8_t STOP_CONVERSION  = 0x22;
-  const uint8_t ACCESS_MEM       = 0x17;
-  const uint8_t ACCESS_CONFIG    = 0xAC;
+  const byte START_CONVERSION = 0xEE;
+  const byte READ_TEMPERATURE = 0xAA;
+  const byte STOP_CONVERSION  = 0x22;
+  const byte ACCESS_MEM       = 0x17;
+  const byte ACCESS_CONFIG    = 0xAC;
   
   // Base sensor address 
-  const uint8_t BASE_ADDRESS     = 0x48;
+  const byte BASE_ADDRESS     = 0x48;
   
   // Stores the actual address
-  uint8_t _address;
+  byte _address;
   
   // Stores the conversion mode
   bool _continuousConversion;
