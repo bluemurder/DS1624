@@ -40,7 +40,19 @@ DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
   Wire.begin();
   
   // Base address least significant bits will be a2, a1, a0 respectively 
-  _address = BASE_ADDRESS | (a2 << 2) | (a1 << 1) | a0;
+  _address = BASE_ADDRESS;
+  if(a2)
+  {
+    _address |= 0x04;
+  }
+  if(a1)
+  {
+    _address |= 0x02;
+  }
+  if(a0)
+  {
+    _address |= 0x01;
+  }
   
   // Save conversion mode
   _continuousConversion = continuousConversion;
