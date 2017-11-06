@@ -29,14 +29,17 @@ SOFTWARE.
 
 DS1624::DS1624()
 { 
+  // Class instance needs to be initialized
+  _initialized = false;
+  
   // a2 <- ground; a1 <- ground; a0 <- ground; continuous conversion = true;
   DS1624(false, false, false, true);
 }
 
 DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
 {
-  // Start I2C communication on default SCK, SDA ports for I2C master
-  Wire.begin();
+  // Class instance needs to be initialized
+  _initialized = false;
   
   // Base address least significant bits will be a2, a1, a0 respectively 
   _address = BASE_ADDRESS;
@@ -55,7 +58,14 @@ DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
   
   // Save conversion mode
   _continuousConversion = continuousConversion;
-  
+
+}
+
+void DS1624::Init()
+{
+  // Start I2C communication on default SCK, SDA ports for I2C master
+  Wire.begin();
+
   //  Configure sensor
   Wire.beginTransmission(_address);
   Wire.write(ACCESS_CONFIG);
@@ -71,6 +81,10 @@ DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
   // So wait for 20ms
   delay(20);
   
+  // Set initialization flag
+  _initialized = true;
+  
+  // Start continuous conversion if requested
   if(_continuousConversion)
   {
     StartConversion();
@@ -79,6 +93,13 @@ DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
 
 void DS1624::StartConversion()
 {
+  // Init instance
+  if(!_initialized)
+  {
+    Init();
+  }
+
+  // Set continuous conversion bit in configuration register
   Wire.beginTransmission(_address);
   Wire.write(START_CONVERSION);
   Wire.endTransmission();
@@ -86,6 +107,12 @@ void DS1624::StartConversion()
 
 void DS1624::StopConversion()
 {
+  // Init instance
+  if(!_initialized)
+  {
+    Init();
+  }
+  
   Wire.beginTransmission(_address);
   Wire.write(STOP_CONVERSION);
   Wire.endTransmission();
@@ -95,6 +122,12 @@ float DS1624::GetTemperature()
 {
   uint8_t msw;
   uint8_t lsw;
+  
+  // Init instance
+  if(!_initialized)
+  {
+    Init();
+  }
   
   if(!_continuousConversion)
   {

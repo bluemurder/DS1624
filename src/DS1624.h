@@ -48,6 +48,12 @@ private:
   // Stores the conversion mode
   bool _continuousConversion;
   
+  // Flag set when class is initialized
+  bool _initialized;
+  
+  // First init of present class
+  void Init();
+  
 public:
   // Default constructor. Use address pins a2,a1,a0 connected to ground,
   // continuous temperature conversion and I2C master default pins
