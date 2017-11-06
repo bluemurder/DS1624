@@ -89,7 +89,8 @@ void DS1624::StopConversion()
 
 float DS1624::GetTemperature()
 {
-  uint16_t temperature = 0;
+  uint8_t msw;
+  uint8_t lsw;
   
   if(!_continuousConversion)
   {
@@ -123,15 +124,27 @@ float DS1624::GetTemperature()
   while(!Wire.available());
   
   // Read most significant word
-  temperature = Wire.read() << 8;
+  msw = Wire.read();
   
   // Wait for data sent from sensor
   while(!Wire.available());
   
   // Read least significant word
-  temperature |= Wire.read();
+  lsw = Wire.read();
+  
+  // If negative temperature, apply two's complement
+  if(msw & 0x80)
+  {
+    msw = ~msw + 0x01;
+    lsw = ~lsw + 0x01;
+  }
+  
+  // Decimal part of the temperature is stored on 4 most significant bits
+  // of the lsw value
+  lsw >>= 4;
 
   // Convert to float and handle negative numbers
-  temperature >>= 4;
-  return (float)((temperature & 0x800 ? (temperature & 0x7ff) - 0x800 : temperature) / 16.0);
+  float temperature = (float)msw;
+  temperature += ((float)lsw) / 16.0; 
+  return temperature;
 }
