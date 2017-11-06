@@ -25,8 +25,8 @@ SOFTWARE.
 *****************************************************************************/
 
 #include "DS1624.h"
-#include <Arduino.h>
 #include <Wire.h>
+#include <Arduino.h>
 
 DS1624::DS1624()
 { 
@@ -64,7 +64,7 @@ DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
   Wire.endTransmission();
     
   // Minimum time needed to store the configuration is 10ms
-  // Here wait for 20ms
+  // So wait for 20ms
   delay(20);
   
   if(_continuousConversion)
@@ -104,7 +104,7 @@ float DS1624::GetTemperature()
       // when conversion done
       Wire.beginTransmission(_address);
       Wire.write(ACCESS_CONFIG);
-      Wire.requestFrom(_address, (size_t)1, true);
+      Wire.requestFrom(_address, 1);
       
       // Wait for data sent from sensor
       while(!Wire.available());
@@ -117,7 +117,7 @@ float DS1624::GetTemperature()
   // Request to read last converted temperature value
   Wire.beginTransmission(_address);
   Wire.write(READ_TEMPERATURE);
-  Wire.requestFrom(_address, (size_t)2, true);
+  Wire.requestFrom(_address, 2);
 
   // Wait for data sent from sensor
   while(!Wire.available());
