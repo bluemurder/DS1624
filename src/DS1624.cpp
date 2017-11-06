@@ -25,7 +25,6 @@ SOFTWARE.
 *****************************************************************************/
 
 #include "DS1624.h"
-#include <Wire.h>
 #include <Arduino.h>
 
 DS1624::DS1624()
@@ -60,7 +59,12 @@ DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
   //  Configure sensor
   Wire.beginTransmission(_address);
   Wire.write(ACCESS_CONFIG);
-  Wire.write(0x00 | _continuousConversion);
+  uint8_t configRegister = 0x00;
+  if(_continuousConversion)
+  {
+    configRegister |= 0x01;
+  }
+  Wire.write(configRegister);
   Wire.endTransmission();
     
   // Minimum time needed to store the configuration is 10ms

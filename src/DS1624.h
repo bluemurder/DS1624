@@ -27,7 +27,7 @@ SOFTWARE.
 #ifndef DS1624_Arduino_Library
 #define DS1624_Arduino_Library
 
-#include <stdint.h>
+#include <Wire.h>
 
 class DS1624
 {
