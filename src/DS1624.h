@@ -41,6 +41,9 @@ private:
   // First init of present class
   void Init();
   
+  // Receive from sensor the last converted temperature value
+  float ReadConvertedValue();
+  
 public:
   // Default constructor. Use address pins a2,a1,a0 connected to ground.
   DS1624();
