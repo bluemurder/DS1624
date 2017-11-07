@@ -42,19 +42,7 @@ DS1624::DS1624(uint8_t addressByPins)
   _initialized = false;
   
   // Base address least significant bits will be a2, a1, a0 respectively 
-  _address = 0x48;
-  if(a2)
-  {
-    _address |= 0x04;
-  }
-  if(a1)
-  {
-    _address |= 0x02;
-  }
-  if(a0)
-  {
-    _address |= 0x01;
-  }
+  _address = 0x48 + (addressByPins & 0xf8);
 }
 
 void DS1624::Init()
