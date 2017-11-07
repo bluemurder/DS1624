@@ -26,10 +26,8 @@ SOFTWARE.
 
 #include <DS1624.h>
 
-// Sensor presents all address pins connected to ground, and it will work in 
-// continuous temperature conversion mode.
-// DS1624(bool a2, bool a1, bool a0, bool continuousConversion);
-DS1624 ds1624(false, false, false, true);
+// Sensor presents all address pins connected to ground
+DS1624 ds1624(0x00);
 
 void setup()
 {  

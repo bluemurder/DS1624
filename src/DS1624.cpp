@@ -32,17 +32,17 @@ DS1624::DS1624()
   // Class instance needs to be initialized
   _initialized = false;
   
-  // a2 <- ground; a1 <- ground; a0 <- ground; continuous conversion = true;
-  DS1624(false, false, false, true);
+  // a2 <- ground; a1 <- ground; a0 <- ground
+  DS1624(0x00);
 }
 
-DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
+DS1624::DS1624(uint8_t addressByPins)
 {
   // Class instance needs to be initialized
   _initialized = false;
   
   // Base address least significant bits will be a2, a1, a0 respectively 
-  _address = BASE_ADDRESS;
+  _address = 0x48;
   if(a2)
   {
     _address |= 0x04;
@@ -55,10 +55,6 @@ DS1624::DS1624(bool a2, bool a1, bool a0, bool continuousConversion)
   {
     _address |= 0x01;
   }
-  
-  // Save conversion mode
-  _continuousConversion = continuousConversion;
-
 }
 
 void DS1624::Init()
@@ -66,55 +62,24 @@ void DS1624::Init()
   // Start I2C communication on default SCK, SDA ports for I2C master
   Wire.begin();
 
-  //  Configure sensor
+  // Configure sensor
   Wire.beginTransmission(_address);
-  Wire.write(ACCESS_CONFIG);
-  uint8_t configRegister = 0x00;
-  if(_continuousConversion)
-  {
-    configRegister |= 0x01;
-  }
-  Wire.write(configRegister);
+  // Command "Access config"
+  Wire.write(0xAC);
+  // lsb of configuration register is ONESHOT bit. Set it to zero to enable continuous conversion
+  Wire.write(0x00);
   Wire.endTransmission();
     
   // Minimum time needed to store the configuration is 10ms
-  // So wait for 20ms
-  delay(20);
+  // So wait for 100ms
+  delay(100);
   
   // Set initialization flag
   _initialized = true;
   
   // Start continuous conversion if requested
-  if(_continuousConversion)
-  {
-    StartConversion();
-  }
-}
-
-void DS1624::StartConversion()
-{
-  // Init instance
-  if(!_initialized)
-  {
-    Init();
-  }
-
-  // Set continuous conversion bit in configuration register
   Wire.beginTransmission(_address);
-  Wire.write(START_CONVERSION);
-  Wire.endTransmission();
-}
-
-void DS1624::StopConversion()
-{
-  // Init instance
-  if(!_initialized)
-  {
-    Init();
-  }
-  
-  Wire.beginTransmission(_address);
-  Wire.write(STOP_CONVERSION);
+  Wire.write(0xEE);
   Wire.endTransmission();
 }
 
@@ -129,42 +94,16 @@ float DS1624::GetTemperature()
     Init();
   }
   
-  if(!_continuousConversion)
-  {
-    // Start conversion
-    StartConversion();
-    
-    // Wait for conversion done
-    uint8_t configRegister = 0x00;
-    do
-    {
-      // Read configuration register. The most significant bit turns to 1
-      // when conversion done
-      Wire.beginTransmission(_address);
-      Wire.write(ACCESS_CONFIG);
-      Wire.requestFrom(_address, (size_t)1);
-      
-      // Wait for data sent from sensor
-      while(!Wire.available());
-      
-      // Check DONE bit
-      configRegister = Wire.read();
-    }while(!(configRegister & 0x80));
-  }
-  
   // Request to read last converted temperature value
   Wire.beginTransmission(_address);
-  Wire.write(READ_TEMPERATURE);
-  Wire.requestFrom(_address, (size_t)2);
+  Wire.write(0xAA);
+  Wire.requestFrom(_address, (uint8_t)2);
 
   // Wait for data sent from sensor
   while(!Wire.available());
   
   // Read most significant word
   msw = Wire.read();
-  
-  // Wait for data sent from sensor
-  while(!Wire.available());
   
   // Read least significant word
   lsw = Wire.read();
