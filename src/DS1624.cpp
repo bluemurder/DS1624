@@ -65,12 +65,10 @@ void DS1624::Init()
   // Set initialization flag
   _initialized = true;
   
-  // Start continuous conversion if requested
+  // Start conversion
   Wire.beginTransmission(_address);
   Wire.write(0xEE);
   Wire.endTransmission();
-  
-  delay(1000);
   
   // Wait for first conversion complete
   while(true)
