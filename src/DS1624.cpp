@@ -69,6 +69,29 @@ void DS1624::Init()
   Wire.beginTransmission(_address);
   Wire.write(0xEE);
   Wire.endTransmission();
+  
+  delay(1000);
+  
+  // Wait for first conversion complete
+  while(true)
+  {
+    // Request to read config register
+    Wire.beginTransmission(_address);
+    Wire.write(0xAC);
+    Wire.requestFrom(_address, (uint8_t)1);
+
+    // Wait for data sent from sensor
+    while(!Wire.available());
+	
+	byte configRegister = Wire.read();
+	Wire.endTransmission();
+	
+	if(configRegister & 0x80)
+	{
+	  // If msb of config register is one, conversion is done
+	  break;
+	}
+  }
 }
 
 float DS1624::GetTemperature()
@@ -95,6 +118,9 @@ float DS1624::GetTemperature()
   
   // Read least significant word
   lsw = Wire.read();
+  
+  // End transmission
+  Wire.endTransmission();
   
   // If negative temperature, apply two's complement
   if(msw & 0x80)
