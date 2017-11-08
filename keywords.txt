@@ -13,6 +13,3 @@ DS1624	KEYWORD1
 ###########################################
 
 GetTemperature	KEYWORD2
-StopConversion	KEYWORD2
-StartConversion	KEYWORD2
-
