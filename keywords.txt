@@ -12,7 +12,7 @@ DS1624	KEYWORD1
 # Methods and Functions (KEYWORD2)
 ###########################################
 
-GetTemperature KEYWORD2
-StopConversion KEYWORD2
-StartConversion KEYWORD2
+GetTemperature	KEYWORD2
+StopConversion	KEYWORD2
+StartConversion	KEYWORD2
 
