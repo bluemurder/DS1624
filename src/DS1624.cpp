@@ -78,9 +78,9 @@ float DS1624::GetTemperature()
   {
     Init();
 	
-	// Execute a first call to read temperature because 
-	// first returned value is not correct
-	ReadConvertedValue();
+    // Execute a first call to read temperature because 
+    // first returned value is not correct
+    ReadConvertedValue();
   }
   
   return ReadConvertedValue();
@@ -95,17 +95,21 @@ float DS1624::ReadConvertedValue()
   Wire.beginTransmission(_address);
   Wire.write(0xAA);
   Wire.requestFrom(_address, (uint8_t)2);
-  // End transmission
-  Wire.endTransmission();
 
   // Wait for data sent from sensor
   while(!Wire.available());
   
   // Read most significant word
   msw = Wire.read();
+	
+  // Wait for data sent from sensor
+  while(!Wire.available());
   
   // Read least significant word
   lsw = Wire.read();
+	
+  // End transmission
+  Wire.endTransmission();
   
   // If negative temperature, apply two's complement
   if(msw & 0x80)
