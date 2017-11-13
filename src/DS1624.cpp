@@ -32,6 +32,9 @@ DS1624::DS1624()
   // Class instance needs to be initialized
   _initialized = false;
   
+  // Default true
+  _temperatureValueValid = true;
+  
   // a2 <- ground; a1 <- ground; a0 <- ground
   DS1624(0x00);
 }
@@ -40,6 +43,9 @@ DS1624::DS1624(uint8_t addressByPins)
 {
   // Class instance needs to be initialized
   _initialized = false;
+  
+  // Default true
+  _temperatureValueValid = true;
   
   // Base address least significant bits will be a2, a1, a0 respectively 
   _address = 0x48 + (addressByPins & 0xf8);
@@ -71,43 +77,49 @@ void DS1624::Init()
   Wire.endTransmission();
 }
 
-float DS1624::GetTemperature()
+void DS1624::GetTemperature(float & readValue, bool & isValid)
 {
   // Init instance if necessary
   if(!_initialized)
   {
     Init();
-	
-    // Execute a first call to read temperature because 
-    // first returned value is not correct
-    ReadConvertedValue();
   }
   
-  return ReadConvertedValue();
+  readValue = ReadConvertedValue();
+  isValid = _temperatureValueValid;
 }
 
 float DS1624::ReadConvertedValue()
 {
-  uint8_t msw;
-  uint8_t lsw;
+  uint8_t msw = 0x00;
+  uint8_t lsw = 0x00;
+  _temperatureValueValid = true;
     
   // Request to read last converted temperature value
   Wire.beginTransmission(_address);
   Wire.write(0xAA);
   Wire.requestFrom(_address, (uint8_t)2);
-
-  // Wait for data sent from sensor
-  while(!Wire.available());
   
   // Read most significant word
-  msw = Wire.read();
-	
-  // Wait for data sent from sensor
-  while(!Wire.available());
+  if(Wire.available())
+  {
+    msw = Wire.read();
+  }
+  else
+  {
+    _temperatureValueValid = false;
+  }
   
   // Read least significant word
-  lsw = Wire.read();
-	
+  if(Wire.available())
+  {
+    lsw = Wire.read();
+  }
+  else
+  {
+    _temperatureValueValid = false;
+  }
+  
   // End transmission
   Wire.endTransmission();
   
@@ -119,7 +131,7 @@ float DS1624::ReadConvertedValue()
   }
   
   // Decimal part of the temperature is stored on 4 most significant bits
-  // of the lsw value
+  // of the lsw value, so shift right 4 bits
   lsw >>= 4;
 
   // Convert to float and handle negative numbers

@@ -38,6 +38,9 @@ private:
   // Flag set when class is initialized
   bool _initialized;
   
+  // Flag that stores if last temperature value was valid
+  bool _temperatureValueValid;
+  
   // First init of present class
   void Init();
   
@@ -53,7 +56,7 @@ public:
   DS1624(uint8_t addressByPins);
   
   // Gets temperature in centigrade degrees
-  float GetTemperature();
+  void GetTemperature(float & readValue, bool & isValid);
 };
 
 #endif //DS1624_Arduino_Library

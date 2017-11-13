@@ -37,10 +37,15 @@ void setup()
 
 void loop()
 {
+  float temperature;
+  bool valid;
+  
   // Get current temperature
-  float temperature = ds1624.GetTemperature();
+  ds1624.GetTemperature(temperature, valid);
+
   // Print it
   Serial.println(temperature);
+
   // Wait a while
   delay(1000);
 }
