@@ -120,6 +120,9 @@ float DS1624::ReadConvertedValue()
     _temperatureValueValid = false;
   }
   
+  // Read possible other data
+  while(Wire.available()) Wire.read();
+  
   // End transmission
   Wire.endTransmission();
   
