@@ -44,7 +44,14 @@ void loop()
   ds1624.GetTemperature(temperature, valid);
 
   // Print it
-  Serial.println(temperature);
+  if(valid)
+  {
+    Serial.println(temperature);
+  }
+  else
+  {
+    Serial.println("Invalid value read from I2C bus");
+  }
 
   // Wait a while
   delay(1000);
