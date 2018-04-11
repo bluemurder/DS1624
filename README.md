@@ -1,5 +1,5 @@
 # DS1624
-Arduino library for Maxim DS1624 temperature sensor and memory https://www.technologytourist.com
+Arduino library for Maxim DS1624 temperature sensor and memory https://www.technologytourist.com/electronics/2017/11/02/DS1624-arduino-library.html
 
 The DS1624 consists of two separate functional units: a 256-byte nonvolatile memory and a direct-to-digital temperature sensor.
 
