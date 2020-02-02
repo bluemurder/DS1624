@@ -48,7 +48,7 @@ DS1624::DS1624(uint8_t addressByPins)
   _temperatureValueValid = true;
   
   // Base address least significant bits will be a2, a1, a0 respectively 
-  _address = 0x48 + (addressByPins & 0xf8);
+  _address = 0x48 + (addressByPins & 0x07);
 }
 
 void DS1624::Init()
